@@ -1,0 +1,26 @@
+{
+  "name": "node-crawler-mpvoice",
+  "version": "1.0.0",
+  "description": "🎙Easily download all the voice clip as mp3 from page of wechat public articles.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "crawler",
+    "wechat",
+    "mp",
+    "voice"
+  ],
+  "author": "roshanca",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "ora": "^4.0.4",
+    "persistent-cache": "^1.1.1",
+    "puppeteer": "^3.0.2"
+  }
+}
