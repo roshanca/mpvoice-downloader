@@ -34,4 +34,8 @@ node index.js [URL] -d [DEST] -c [COUNT]
 
 ### Get the url of WeChat public platform articles:
 
+![](https://raw.githubusercontent.com/roshanca/node-crawler-mpvoice/master/screenshot/wechat.png)
+
 ### Downloading:
+
+![](https://raw.githubusercontent.com/roshanca/node-crawler-mpvoice/master/screenshot/downloading.png)
