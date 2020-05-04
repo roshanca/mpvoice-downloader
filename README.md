@@ -1,6 +1,8 @@
 # node-crawler-mpvoice
 
-批量下载微信公众平台文章上的音频合集。
+Download audio collections on WeChat public platform articles in batches. 
+
+Mainly used Headless Chrome, Node.js and Puppeteer.
 
 ## Install
 
@@ -16,14 +18,20 @@ cd node-crawler-mpvoice && npm install
 npm start [URL]
 ```
 
-`URL` 为微信公众平台文章的地址。For example:
+`URL` is the page url of WeChat public platform articles. For example:
 
 ```
 npm start https://mp.weixin.qq.com/s/Gvqf6yqxKrAUlr0mUy9AAQ
 ```
 
-也可以指定下载目录（默认为 `dist`），指定下载个数限制（默认全部下载）。
+You can manually specify the download directory with `-d`(default is `./dist`), also can limit the number of downloaded files with `-c`:
 
 ```
 node index.js [URL] -d [DEST] -c [COUNT]
 ```
+
+## Screenshot
+
+### Get the url of WeChat public platform articles:
+
+### Downloading:
