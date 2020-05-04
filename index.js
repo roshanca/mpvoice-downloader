@@ -1,8 +1,10 @@
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
 const minimist = require('minimist');
 const puppeteer = require('puppeteer');
 const cache = require('persistent-cache');
+const chalk = require('chalk');
 const ora = require('ora');
 
 /**
@@ -20,8 +22,9 @@ const maxCount = args['c'];
 // const TARGET_URL = 'https://mp.weixin.qq.com/s/Gvqf6yqxKrAUlr0mUy9AAQ';
 const DOWNLOAD_URL = 'https://res.wx.qq.com/voice/getvoice?mediaid=';
 
-const crawled = cache();
+const crawled = cache({ name: 'mpvoice' });
 const spinner = ora();
+const progress = ora();
 
 /**
  * Finds all anchors on the page.
@@ -66,7 +69,7 @@ async function crawl(browser, url, index, totalCount) {
   // skip cached item
   const cached = crawled.getSync(downloadId);
   if (cached) {
-    spinner.text = `Skip ${cached}.`;
+    spinner.text = chalk.grey(`Skip ${cached}.`);
     spinner.warn();
     return;
   }
@@ -75,11 +78,12 @@ async function crawl(browser, url, index, totalCount) {
     fs.mkdirSync(destPath);
   }
 
-  console.log(`Downloading ${title} to ${destPath}`);
-  download(DOWNLOAD_URL + downloadId, `${destPath}/${title}.mp3`, () => {
+  spinner.text = `Downloading ${title} to ${destPath}`;
+  spinner.info();
+  download(DOWNLOAD_URL + downloadId, `${destPath}/${title}.mp3`, (file) => {
     crawled.putSync(downloadId, title);
     const count = index + 1;
-    spinner.text = `[${count} / ${totalCount}]`;
+    spinner.text = chalk.green(`[${count} / ${totalCount}] ${file} was downloaded.`);
     spinner.succeed();
   });
 
@@ -120,18 +124,44 @@ function extraVoiceInfo() {
  */
 function download(url, dest, callback) {
   const file = fs.createWriteStream(dest);
+  let receivedBytes = 0;
 
   https.get(url, (response) => {
-    response.pipe(file);
+    if (response.statusCode !== 200) {
+      spinner.text = `Response status was ${response.statusCode}.`;
+      spinner.fail();
+      return;
+    }
 
-    file
-      .on('finish', () => {
-        file.close();
-        callback && callback();
+    const contentLength = parseInt(response.headers['content-length'], 10);
+    progress.start();
+
+    response
+      .on('data', (chunk) => {
+        file.write(chunk);
+        receivedBytes += chunk.length;
+        progress.text = chalk.cyan(
+          `${((100 * receivedBytes) / contentLength).toFixed(2)}% ${receivedBytes} bytes\r`
+        );
+      })
+      .on('end', () => {
+        file.end();
+        progress.stop();
+        callback && callback(path.basename(dest));
       })
       .on('error', () => {
+        progress.stop();
         fs.unlink(dest);
       });
+
+    // file
+    //   .on('finish', () => {
+    //     file.close();
+    //     callback && callback();
+    //   })
+    //   .on('error', () => {
+    //     fs.unlink(dest);
+    //   });
   });
 }
 
@@ -163,7 +193,8 @@ function download(url, dest, callback) {
  * @param {Error | string} error
  */
 process.on('unhandledRejection', (error) => {
-  spinner.text = typeof error === 'string' ? error : error.message;
+  const errMsg = typeof error === 'string' ? error : error.message;
+  spinner.text = chalk.red(errMsg);
   spinner.fail();
   process.exit(1); // To exit with a 'failure' code
 });
