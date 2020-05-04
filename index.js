@@ -13,10 +13,13 @@ const ora = require('ora');
  * @property {string} downloadId
  */
 
+const isWin = process.platform === 'win32';
+const compatibleDist = isWin ? '.\\dist' : './dist';
+
 // args of command line
 const args = minimist(process.argv.slice(2));
 const crawlUrl = args['_'][0];
-const destPath = args['d'] || './dist';
+const destPath = args['d'] || compatibleDist;
 const maxCount = args['c'];
 
 // const TARGET_URL = 'https://mp.weixin.qq.com/s/Gvqf6yqxKrAUlr0mUy9AAQ';
@@ -141,7 +144,9 @@ function download(url, dest, callback) {
         file.write(chunk);
         receivedBytes += chunk.length;
         progress.text = chalk.cyan(
-          `${((100 * receivedBytes) / contentLength).toFixed(2)}% ${receivedBytes} bytes\r`
+          `${((100 * receivedBytes) / contentLength).toFixed(2)}% ${receivedBytes} bytes${
+            isWin ? '\033[0G' : '\r'
+          }`
         );
       })
       .on('end', () => {
