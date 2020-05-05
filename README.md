@@ -1,6 +1,6 @@
 # node-crawler-mpvoice
 
-Download audio collections on WeChat public platform articles in batches. 
+Download audio collections on WeChat public platform articles in batches.
 
 Mainly used Headless Chrome, Node.js and Puppeteer.
 
@@ -29,6 +29,10 @@ You can manually specify the download directory with `-d`(default is `./dist`), 
 ```
 node index.js [URL] -d [DEST] -c [COUNT]
 ```
+
+## Cache
+
+To avoid unnecessary repeated downloads, every downloaded id will be put in local cache file, which is stored in `./cache/mpvoice`. If you really want to re-download resources, delete the corresponding cache file firstly. If not, download will be always skipped.
 
 ## Screenshot
 
