@@ -83,6 +83,9 @@ async function crawl(browser, url, index, totalCount) {
 
   spinner.text = `Downloading ${title} to ${destPath}`;
   spinner.info();
+  progress.clear();
+
+  // download task start
   download(DOWNLOAD_URL + downloadId, `${destPath}/${title}.mp3`, (file) => {
     crawled.putSync(downloadId, title);
     const count = index + 1;
