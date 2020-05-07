@@ -69,6 +69,12 @@ async function crawl(browser, url, index, totalCount) {
   /** @type {VoiceInfo} */
   const { title, downloadId } = await newPage.evaluate(extraVoiceInfo);
 
+  if (!downloadId) {
+    spinner.text = `Can't find anything to download in ${url}`;
+    spinner.fail();
+    return;
+  }
+
   if (!fs.existsSync(destPath)) {
     fs.mkdirSync(destPath);
   }
