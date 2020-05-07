@@ -34,6 +34,12 @@ node index.js [URL] -d [DEST] -c [COUNT]
 
 To avoid unnecessary repeated downloads, every downloaded id will be put in local cache file, which is stored in `./cache/mpvoice`. If you really want to re-download resources, delete the corresponding cache file firstly. If not, download will be always skipped.
 
+If you want to empty all the cache, simply call:
+
+```
+npm run emptyCache
+```
+
 ## Screenshot
 
 ### Get the url of WeChat public platform articles:

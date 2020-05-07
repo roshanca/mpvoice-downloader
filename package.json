@@ -4,7 +4,8 @@
   "description": "🎙Easily download all the voice clip as mp3 from page of WeChat public platform articles.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "emptyCache": "node cache.js"
   },
   "keywords": [
     "crawler",
@@ -22,6 +23,6 @@
     "minimist": "^1.2.5",
     "ora": "^4.0.4",
     "persistent-cache": "^1.1.1",
-    "puppeteer": "^3.0.2"
+    "puppeteer": "^3.0.3"
   }
 }

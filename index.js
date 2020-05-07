@@ -69,14 +69,6 @@ async function crawl(browser, url, index, totalCount) {
   /** @type {VoiceInfo} */
   const { title, downloadId } = await newPage.evaluate(extraVoiceInfo);
 
-  // skip cached item
-  const cached = crawled.getSync(downloadId);
-  if (cached) {
-    spinner.text = chalk.grey(`Skip ${cached}.`);
-    spinner.warn();
-    return;
-  }
-
   if (!fs.existsSync(destPath)) {
     fs.mkdirSync(destPath);
   }
@@ -87,7 +79,7 @@ async function crawl(browser, url, index, totalCount) {
 
   // download task start
   download(DOWNLOAD_URL + downloadId, `${destPath}/${title}.mp3`, (file) => {
-    crawled.putSync(downloadId, title);
+    crawled.putSync(downloadId, { url, title });
     const count = index + 1;
     spinner.text = chalk.green(`[${count} / ${totalCount}] ${file} was downloaded.`);
     spinner.succeed();
@@ -188,10 +180,24 @@ function download(url, dest, callback) {
     anchors = anchors.slice(0, maxCount);
   }
 
+  let crawledKeys = crawled.keysSync();
+  let crawledMap = {};
+
+  crawledKeys.forEach((id) => {
+    const { url, title } = crawled.getSync(id);
+    crawledMap[url] = title;
+  });
+
   // bootstrap
   spinner.start();
   for (const [index, url] of anchors.entries()) {
-    await crawl(browser, url, index, anchors.length);
+    // skip cached item
+    if (crawledMap[url]) {
+      spinner.text = chalk.grey(`Skip ${crawledMap[url]}.`);
+      spinner.warn();
+    } else {
+      await crawl(browser, url, index, anchors.length);
+    }
   }
 
   await browser.close();
