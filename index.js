@@ -103,7 +103,7 @@ function extraVoiceInfo() {
   const voiceElem = document.querySelector('[aria-labelledby]');
 
   const title = titleElem ? titleElem.textContent.trim() : '';
-  const { id } = voiceElem;
+  const { id } = voiceElem || {};
   let downloadId = null;
 
   if (id) {
