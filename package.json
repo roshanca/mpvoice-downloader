@@ -1,6 +1,6 @@
 {
   "name": "node-crawler-mpvoice",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "🎙Easily download all the voice clip as mp3 from page of WeChat public platform articles.",
   "main": "index.js",
   "scripts": {

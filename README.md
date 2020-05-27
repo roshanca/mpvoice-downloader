@@ -6,6 +6,10 @@ Mainly used Headless Chrome, Node.js and Puppeteer.
 
 ## Install
 
+You have to get `node.js >= 10.13.0` installed in your system before anything.
+
+> [The official site](https://nodejs.org/en/)
+
 ```
 git clone git@github.com:roshanca/node-crawler-mpvoice.git
 
@@ -40,12 +44,16 @@ If you want to empty all the cache, simply call:
 npm run emptyCache
 ```
 
+## Troubleshooting
+
+[can't install puppeteer?](https://github.com/roshanca/node-crawler-mpvoice/issues/1#issuecomment-624761341)
+
 ## Screenshot
 
 ### Get the url of WeChat public platform articles:
 
-![](https://raw.githubusercontent.com/roshanca/node-crawler-mpvoice/master/screenshot/wechat.png)
+![](https://s10.mogucdn.com/mlcdn/c45406/200527_393ab18iede42l08i1d2k371b4l4h_480x1039.png)
 
 ### Downloading:
 
-![](https://raw.githubusercontent.com/roshanca/node-crawler-mpvoice/master/screenshot/downloading.png)
+![](https://s10.mogucdn.com/mlcdn/c45406/200527_14jk3dd3aa23l0i2j71e26kd4kg2c_1557x918.jpg)

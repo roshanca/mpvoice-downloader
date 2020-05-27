@@ -79,15 +79,17 @@ async function crawl(browser, url, index, totalCount) {
     fs.mkdirSync(destPath);
   }
 
-  spinner.text = `Downloading ${title} to ${destPath}`;
+  spinner.text = `Downloading ${index + 1}.${title}`;
   spinner.info();
   progress.clear();
 
   // download task start
-  download(DOWNLOAD_URL + downloadId, `${destPath}/${title}.mp3`, (file) => {
+  download(DOWNLOAD_URL + downloadId, `${destPath}/${index + 1}.${title}.mp3`, (file, size) => {
     crawled.putSync(downloadId, { url, title });
     const count = index + 1;
-    spinner.text = chalk.green(`[${count} / ${totalCount}] ${file} was downloaded.`);
+    const kb = size / 1000
+    const displaySize = kb / 1024 > 1 ? (kb / 1024).toFixed(2) + 'MB' : kb.toFixed(2) + 'KB'
+    spinner.text = chalk.green(`[${count} / ${totalCount}] ${file} (${displaySize}) was downloaded.`);
     spinner.succeed();
   });
 
@@ -153,7 +155,7 @@ function download(url, dest, callback) {
       .on('end', () => {
         file.end();
         progress.stop();
-        callback && callback(path.basename(dest));
+        callback && callback(path.basename(dest), receivedBytes);
       })
       .on('error', () => {
         progress.stop();
@@ -193,6 +195,8 @@ function download(url, dest, callback) {
     const { url, title } = crawled.getSync(id);
     crawledMap[url] = title;
   });
+
+  console.log(`Start downloading mp3 to ${destPath}`)
 
   // bootstrap
   spinner.start();
