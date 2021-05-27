@@ -1,6 +1,6 @@
 # node-crawler-mpvoice
 
-Download audio collections on WeChat public platform articles in batches.
+Batch download audio files inside WeChat public articles.
 
 Mainly used Headless Chrome, Node.js and Puppeteer.
 
@@ -22,7 +22,7 @@ cd node-crawler-mpvoice && npm install
 npm start [URL]
 ```
 
-`URL` is the page url of WeChat public platform articles. For example:
+`URL` is the page url of WeChat public articles. For example:
 
 ```
 npm start https://mp.weixin.qq.com/s/Gvqf6yqxKrAUlr0mUy9AAQ
