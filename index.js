@@ -101,24 +101,11 @@ async function crawl(browser, url, index, totalCount) {
  * @returns {VoiceInfo}
  */
 function extraVoiceInfo() {
-  const titleElem = document.querySelector('#activity-name');
-  const voiceElem = document.querySelector('[aria-labelledby]');
-
-  const title = titleElem ? titleElem.textContent.trim() : '';
-  const { id } = voiceElem || {};
-  let downloadId = null;
-
-  if (id) {
-    const matched = id.match(/^voice_main_(\S+.)_0$/);
-
-    if (matched) {
-      downloadId = matched[1];
-    }
-  }
+  const mpvoice = document.querySelector('mpvoice');
 
   return {
-    title,
-    downloadId,
+    title: mpvoice.getAttribute('name'),
+    downloadId: mpvoice.getAttribute('voice_encode_fileid'),
   };
 }
 
